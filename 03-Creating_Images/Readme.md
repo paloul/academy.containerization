@@ -179,3 +179,6 @@ View the images again with `docker images` and report what you see.
    Smaller images typically contain fewer components and fewer potential security vulnerabilities. Removing unwanted libraries can mitigate risk.
 6. Improved application performance  
    Optimized containers use system resources more effectively.
+
+## Exploration
+We based this exercise off of Ubuntu 22.04 container image. Play with different base images and try to lower the image size even further.
