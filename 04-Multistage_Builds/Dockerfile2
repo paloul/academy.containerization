@@ -1,4 +1,5 @@
-FROM sbtscala/scala-sbt:eclipse-temurin-alpine-21.0.2_13_1.10.2_3.5.1
+### Build Image
+FROM sbtscala/scala-sbt:eclipse-temurin-alpine-21.0.2_13_1.10.2_3.5.1 AS build
 LABEL authors="George Paloulian"
 
 # Set the working directory inside the container
@@ -9,8 +10,24 @@ RUN git clone https://github.com/paloul/grpc.streaming.mod.git .
 
 # Use SBT to compile
 RUN sbt clean compile
+# Will generate /grpc-streaming-mod/target/universal/groundstation-commandserver-0.1.0-SNAPSHOT.zip
+RUN sbt universal:packageBin
+# Unzip the ZIP file in the build image, as the unzip or other tools might not be found in runtime image
+RUN unzip /grpc-streaming-mod/target/universal/groundstation-commandserver-0.1.0-SNAPSHOT.zip
+
+
+### Actual Image
+FROM eclipse-temurin:21-jre
+#FROM sbtscala/scala-sbt:eclipse-temurin-alpine-21.0.2_13_1.10.2_3.5.1
+LABEL authors="George Paloulian"
+
+# Set the working directory inside the container
+WORKDIR /grpc-streaming-mod
+
+# Copy the unzipped folder contents from the build image to our working directory
+COPY --from=build /grpc-streaming-mod/groundstation-commandserver-0.1.0-SNAPSHOT .
 
 # Expose the port
 EXPOSE 8080
 
-ENTRYPOINT ["sbt", "runMain edu.caltech.cast.indy.GreeterServer"]
+CMD ["/grpc-streaming-mod/bin/greeter-server"]
