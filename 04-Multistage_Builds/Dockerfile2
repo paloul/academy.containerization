@@ -1,0 +1,16 @@
+FROM sbtscala/scala-sbt:eclipse-temurin-alpine-21.0.2_13_1.10.2_3.5.1
+LABEL authors="George Paloulian"
+
+# Set the working directory inside the container
+WORKDIR /grpc-streaming-mod
+
+# Get the source code directly into current working directory /grpc-streaming-mod
+RUN git clone https://github.com/paloul/grpc.streaming.mod.git .
+
+# Use SBT to compile
+RUN sbt clean compile
+
+# Expose the port
+EXPOSE 8080
+
+ENTRYPOINT ["sbt", "runMain edu.caltech.cast.indy.GreeterServer"]
