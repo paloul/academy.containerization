@@ -108,3 +108,5 @@ Run your new image and execute `ping` to verify the changes you've made
 ## Observations 
 Take a look at the output from `docker images`. 
 What do you notice between the original Ubuntu image and your customized image?
+
+Building our own container images using Dockerfiles gives us flexibility to be more efficient.  
