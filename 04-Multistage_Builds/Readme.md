@@ -121,6 +121,9 @@ Build your own image and check the image size. Report on the image size.
 $ docker build -t grpc-streaming-mod-2 -f Dockerfile2 .
 
 $ docker images
+
+# Run the new image to see if it worked
+$ docker run -p 8080:8080 grpc-streaming-mod-2
 ```
 
 *Hint*: The final image can base itself from a different base image as long as Java is available, i.e. 
